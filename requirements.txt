@@ -3,3 +3,5 @@ supervision
 pillow
 transformers
 accelerate
+yt_dlp
+moviepy==1.0.3

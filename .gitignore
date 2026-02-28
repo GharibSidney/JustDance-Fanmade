@@ -1,4 +1,9 @@
 .vscode
+rasputin
+labels
+musics
+*.png
+*.jpg
 *.pt
 *.onnx
 *.engine

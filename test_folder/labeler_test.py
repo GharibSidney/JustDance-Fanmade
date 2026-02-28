@@ -10,7 +10,7 @@ device = Accelerator().device
 
 # url = "https://www.fcbarcelona.com/fcbarcelona/photo/2021/01/31/3c55a19f-dfc1-4451-885e-afd14e890a11/mini_2021-01-31-BARCELONA-ATHLETIC-BILBAOI-30.JPG"
 # image = Image.open(requests.get(url, stream=True).raw)
-image = Image.open("image2.png").convert("RGB")
+image = Image.open("../images/image2.png").convert("RGB")
 
 # Detect humans in the image
 person_image_processor = AutoProcessor.from_pretrained("PekingU/rtdetr_r50vd_coco_o365")
