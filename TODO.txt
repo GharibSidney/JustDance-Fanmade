@@ -1,1 +1,2 @@
 Faire en sorte qu'on normalise le squelette si la personne est plus proche ou plus loin de l'écran
+ou à guache ou a droite
