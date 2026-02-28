@@ -7,3 +7,5 @@ BODY_SKELETON = [
     (6, 8), (8, 10), # left leg
     (7, 9), (9, 11)  # right leg
 ]
+
+MAX_FRAMES = 300

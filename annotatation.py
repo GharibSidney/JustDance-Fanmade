@@ -11,7 +11,7 @@ from transformers import (
     VitPoseForPoseEstimation
 )
 from accelerate import Accelerator
-
+from values import MAX_FRAMES
 
 
 # ============================================================
@@ -44,10 +44,6 @@ pose_model = VitPoseForPoseEstimation.from_pretrained(
     device_map=device
 )
 
-
-
-
-
 # ============================================================
 # 🔹 OPEN VIDEO
 # ============================================================
@@ -57,7 +53,7 @@ frame_index = 0
 
 while True:
     ret, frame = cap.read()
-    if not ret or frame_index > 40:
+    if not ret or frame_index > MAX_FRAMES:
         break
 
     height, width = frame.shape[:2]
