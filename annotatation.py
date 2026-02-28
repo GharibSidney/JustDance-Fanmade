@@ -61,12 +61,7 @@ while True:
     # Convert to PILq
     image = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
 
-    label_data = {
-        "frame_index": frame_index,
-        "image_width": width,
-        "image_height": height,
-        "persons": []
-    }
+    label_data = {"frame_index": frame_index, "image_width": width, "image_height": height, "persons": []}
     # --------------------------------------------------------
     # 1️⃣ Person Detection
     # --------------------------------------------------------
@@ -118,6 +113,9 @@ while True:
             ]).cpu().numpy()
 
             key_points = sv.KeyPoints(xy=xy[:, 5:, :], confidence=scores[:, 5:])
+            key_points_normalized = key_points.xy.copy()
+            key_points_normalized[..., 0] /= width
+            key_points_normalized[..., 1] /= height
             person_data = {
             "bounding_box": {
                 "x1": float(person_boxes[0, 0]),
@@ -126,8 +124,8 @@ while True:
                 "y2": float(person_boxes[0, 3])
             },
             "keypoints":  key_points.xy.tolist(),
-            "confidence": key_points.confidence.tolist()
-            # "keypoints_normalized":
+            "confidence": key_points.confidence.tolist(),
+            "keypoints_normalized":key_points_normalized.tolist()
         }
 
         label_data["persons"].append(person_data)

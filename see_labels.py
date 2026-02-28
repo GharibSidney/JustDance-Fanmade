@@ -60,22 +60,30 @@ while frame_index < MAX_FRAMES:
 
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 3)
 
-            keypoints = person["keypoints"][0]
+            keypoints = person["keypoints_normalized"][0]
             confidences = person["confidence"][0]
+
+            img_w = data["image_width"]
+            img_h = data["image_height"]
 
             for (x, y), conf in zip(keypoints, confidences):
                 if conf > 0.2:
-                    cv2.circle(frame, (int(x), int(y)), 6, (0, 0, 255), -1)
+                    cv2.circle(frame, (int(x * img_w), int(y * img_h)), 6, (0, 0, 255), -1)
 
             for i_k, j_k in BODY_SKELETON:
                 if confidences[i_k] > 0.2 and confidences[j_k] > 0.2:
-                    x1_k, y1_k = keypoints[i_k]
-                    x2_k, y2_k = keypoints[j_k]
+
+                    x1_k = keypoints[i_k][0] * img_w
+                    y1_k = keypoints[i_k][1] * img_h
+
+                    x2_k = keypoints[j_k][0] * img_w
+                    y2_k = keypoints[j_k][1] * img_h
+
                     cv2.line(frame,
-                             (int(x1_k), int(y1_k)),
-                             (int(x2_k), int(y2_k)),
-                             (255, 0, 0),
-                             2)
+                            (int(x1_k), int(y1_k)),
+                            (int(x2_k), int(y2_k)),
+                            (255, 0, 0),
+                            2)
 
     # SHOW FRAME
     cv2.imshow("Preview", frame)
