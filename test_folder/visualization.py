@@ -9,7 +9,7 @@ from transformers import (
     VitPoseForPoseEstimation
 )
 from accelerate import Accelerator
-from values import BODY_SKELETON
+from constantes import BODY_SKELETON
 
 # ============================================================
 # 🔹 CONFIG

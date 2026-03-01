@@ -1,13 +1,12 @@
 import os
 import json
 import cv2
-from values import BODY_SKELETON, MAX_FRAMES
+from constantes import BODY_SKELETON, MAX_FRAMES
 # =========================
 # Paths
 # =========================
-video_path = "musics/Just Dance 2017 PC Unlimited Rasputin 4K.webm"          # original video
+video_path = "downloads/Just Dance 2017 PC Unlimited Rasputin 4K.mp4"          # original video
 labels_dir = "labels"             # folder containing json files
-output_path = "output_annotated.mp4"
 
 # =========================
 # Open video
@@ -19,14 +18,7 @@ width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
 fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-out = cv2.VideoWriter(output_path, fourcc, fps, (width, height))
-
 frame_index = 0
-
-# =========================
-# Skeleton (optional)
-# =========================
-
 
 # =========================
 # Process Video
@@ -60,30 +52,27 @@ while frame_index < MAX_FRAMES:
 
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 3)
 
-            keypoints = person["keypoints_normalized"][0]
+            keypoints = person["keypoints_to_hips"]
             confidences = person["confidence"][0]
-
+            hip_center = person["hip_center"]
             img_w = data["image_width"]
             img_h = data["image_height"]
 
-            for (x, y), conf in zip(keypoints, confidences):
-                if conf > 0.2:
-                    cv2.circle(frame, (int(x * img_w), int(y * img_h)), 6, (0, 0, 255), -1)
-
+            for (dx, dy), c in zip(keypoints, confidences):
+                    if c > 0.2:
+                        x = hip_center[0] + dx
+                        y = hip_center[1] + dy
+                        cv2.circle(frame, (int(x), int(y)), 6, (0, 0, 255), -1)
+                
+                # Draw skeleton lines
             for i_k, j_k in BODY_SKELETON:
-                if confidences[i_k] > 0.2 and confidences[j_k] > 0.2:
-
-                    x1_k = keypoints[i_k][0] * img_w
-                    y1_k = keypoints[i_k][1] * img_h
-
-                    x2_k = keypoints[j_k][0] * img_w
-                    y2_k = keypoints[j_k][1] * img_h
-
-                    cv2.line(frame,
-                            (int(x1_k), int(y1_k)),
-                            (int(x2_k), int(y2_k)),
-                            (255, 0, 0),
-                            2)
+                    if confidences[i_k] > 0.2 and confidences[j_k] > 0.2:
+                        x1 = hip_center[0] + keypoints[i_k][0]
+                        y1 = hip_center[1] + keypoints[i_k][1]
+                        x2 = hip_center[0] + keypoints[j_k][0]
+                        y2 = hip_center[1] + keypoints[j_k][1]
+                        
+                        cv2.line(frame, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)
 
     # SHOW FRAME
     cv2.imshow("Preview", frame)

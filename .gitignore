@@ -2,7 +2,7 @@
 rasputin
 labels
 musics
-.mp4
+*.mp4
 *.png
 *.jpg
 *.pt

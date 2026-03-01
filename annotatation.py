@@ -11,14 +11,14 @@ from transformers import (
     VitPoseForPoseEstimation
 )
 from accelerate import Accelerator
-from values import MAX_FRAMES
+from constantes import MAX_FRAMES
 
 
 # ============================================================
 # 🔹 CONFIG
 # ============================================================
 
-VIDEO_PATH = "downloads/Just Dance 2017 PC Unlimited Rasputin 4K.webm"   # change to your video
+VIDEO_PATH = "downloads/Just Dance 2017 PC Unlimited Rasputin 4K.mp4"   # change to your video
 
 device = Accelerator().device
 
@@ -92,17 +92,21 @@ while True:
             key_points_normalized[..., 1] /= height
             x1 = person_boxes[0, 0]
             y1 = person_boxes[0, 1]
-            box_width = person_boxes[0, 2] #x2
-            box_height = person_boxes[0, 3] #y2
-            box_width = max(box_width, 1e-6) # for security
-            box_height = max(box_height, 1e-6)
+            # 1️⃣ Center on hips
+            kp = key_points.xy[0] 
+            hip_center = (kp[6] + kp[7]) / 2
+            kp_centered = kp - hip_center
+            # box_width = person_boxes[0, 2] #x2
+            # box_height = person_boxes[0, 3] #y2
+            # box_width = max(box_width, 1e-6) # for security
+            # box_height = max(box_height, 1e-6)
 
             # Copy keypoints
-            keypoints_bbox_normalized = key_points.xy.copy()
+            # keypoints_bbox_normalized = key_points.xy.copy()
 
             # Normalize relative to bounding box
-            keypoints_bbox_normalized[..., 0] = (keypoints_bbox_normalized[..., 0] - x1) / box_width
-            keypoints_bbox_normalized[..., 1] = (keypoints_bbox_normalized[..., 1] - y1) / box_height
+            # keypoints_bbox_normalized[..., 0] = (keypoints_bbox_normalized[..., 0] - x1) / box_width
+            # keypoints_bbox_normalized[..., 1] = (keypoints_bbox_normalized[..., 1] - y1) / box_height
             person_data = {
             "bounding_box": {
                 "x1": float(person_boxes[0, 0]),
@@ -119,7 +123,8 @@ while True:
             "keypoints":  key_points.xy.tolist(),
             "confidence": key_points.confidence.tolist(),
             "keypoints_normalized":key_points_normalized.tolist(),
-            "keypoints_normalized_to_bounding_box": keypoints_bbox_normalized.tolist(),
+            "hip_center": hip_center.tolist(),
+            "keypoints_to_hips": kp_centered.tolist(),
         }
 
         label_data["persons"].append(person_data)
