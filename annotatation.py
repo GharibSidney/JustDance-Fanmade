@@ -96,6 +96,12 @@ while True:
             kp = key_points.xy[0] 
             hip_center = (kp[6] + kp[7]) / 2
             kp_centered = kp - hip_center
+            kp_centered_normalized = kp_centered.copy()
+            kp_centered_normalized[..., 0] /= width
+            kp_centered_normalized[..., 1] /= height
+            hip_center_normalized = hip_center.copy()
+            hip_center_normalized[0] /= width
+            hip_center_normalized[1] /= height
             # box_width = person_boxes[0, 2] #x2
             # box_height = person_boxes[0, 3] #y2
             # box_width = max(box_width, 1e-6) # for security
@@ -122,9 +128,11 @@ while True:
             },
             "keypoints":  key_points.xy.tolist(),
             "confidence": key_points.confidence.tolist(),
-            "keypoints_normalized":key_points_normalized.tolist(),
-            "hip_center": hip_center.tolist(),
-            "keypoints_to_hips": kp_centered.tolist(),
+            # "keypoints_normalized":key_points_normalized.tolist(),
+            # "hip_center": hip_center.tolist(),
+            # "keypoints_to_hips": kp_centered.tolist(),
+            "keypoints_to_hips_normalized": kp_centered_normalized.tolist(),
+            "hip_center_normalized": hip_center_normalized.tolist()
         }
 
         label_data["persons"].append(person_data)

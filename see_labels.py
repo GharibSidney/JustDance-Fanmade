@@ -52,25 +52,25 @@ while frame_index < MAX_FRAMES:
 
             cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 3)
 
-            keypoints = person["keypoints_to_hips"]
+            keypoints = person["keypoints_to_hips_normalized"]
             confidences = person["confidence"][0]
-            hip_center = person["hip_center"]
+            hip_center = person["hip_center_normalized"]
             img_w = data["image_width"]
             img_h = data["image_height"]
 
             for (dx, dy), c in zip(keypoints, confidences):
                     if c > 0.2:
-                        x = hip_center[0] + dx
-                        y = hip_center[1] + dy
+                        x = (hip_center[0] + dx) * img_w
+                        y = (hip_center[1] + dy) * img_h
                         cv2.circle(frame, (int(x), int(y)), 6, (0, 0, 255), -1)
                 
                 # Draw skeleton lines
             for i_k, j_k in BODY_SKELETON:
                     if confidences[i_k] > 0.2 and confidences[j_k] > 0.2:
-                        x1 = hip_center[0] + keypoints[i_k][0]
-                        y1 = hip_center[1] + keypoints[i_k][1]
-                        x2 = hip_center[0] + keypoints[j_k][0]
-                        y2 = hip_center[1] + keypoints[j_k][1]
+                        x1 = (hip_center[0] + keypoints[i_k][0]) * img_w
+                        y1 = (hip_center[1] + keypoints[i_k][1]) * img_h
+                        x2 = (hip_center[0] + keypoints[j_k][0]) * img_w
+                        y2 = (hip_center[1] + keypoints[j_k][1]) * img_h
                         
                         cv2.line(frame, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)
 
