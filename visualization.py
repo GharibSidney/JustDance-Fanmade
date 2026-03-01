@@ -15,7 +15,7 @@ from values import BODY_SKELETON
 # 🔹 CONFIG
 # ============================================================
 
-VIDEO_PATH = "musics/Just Dance 2017 PC Unlimited Rasputin 4K.webm"   # change to your video
+VIDEO_PATH = "downloads/Just Dance 2017 PC Unlimited Rasputin 4K.webm"   # change to your video
 
 device = Accelerator().device
 
