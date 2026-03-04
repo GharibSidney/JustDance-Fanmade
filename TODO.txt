@@ -1,2 +1,10 @@
+Plan de match:
+display les annotations sur moi
+run yolo sur moi
+comparer les annotations vs la nouvelle détection (aka prend le hips de yolo MAIS j'affiche ceux de ViT)
+obtenir un score sur une dance
+optionnelle - normalisé le squelette
+ajouter le le menu qui start et qui dit quand est-ce que tu dois commencer 
+
 Faire en sorte qu'on normalise le squelette si la personne est plus proche ou plus loin de l'écran
 ou à gauche ou a droite
