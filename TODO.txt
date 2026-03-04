@@ -8,3 +8,5 @@ ajouter le le menu qui start et qui dit quand est-ce que tu dois commencer
 
 Faire en sorte qu'on normalise le squelette si la personne est plus proche ou plus loin de l'écran
 ou à gauche ou a droite
+
+- Si on ne voit pas le point on ne compte pas le score, donc si je ne vois pas tes pieds, je ne compte pas.
