@@ -1,17 +1,16 @@
 import os
 import json
 import cv2
-from constantes import BODY_SKELETON, MAX_FRAMES
+from constantes import VIDEO_PATH, BODY_SKELETON, MAX_FRAMES
 # =========================
 # Paths
 # =========================
-video_path = "downloads/Just Dance 2017 PC Unlimited Rasputin 4K.mp4"          # original video
 labels_dir = "labels"             # folder containing json files
 
 # =========================
 # Open video
 # =========================
-cap = cv2.VideoCapture(video_path)
+cap = cv2.VideoCapture(VIDEO_PATH)
 
 fps = cap.get(cv2.CAP_PROP_FPS)
 width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))

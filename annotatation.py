@@ -11,14 +11,14 @@ from transformers import (
     VitPoseForPoseEstimation
 )
 from accelerate import Accelerator
-from constantes import MAX_FRAMES
+from constantes import VIDEO_PATH, MAX_FRAMES 
 
 
 # ============================================================
 # 🔹 CONFIG
 # ============================================================
 
-VIDEO_PATH = "downloads/Just Dance 2017 PC Unlimited Rasputin 4K.mp4"   # change to your video
+  # change to your video
 
 device = Accelerator().device
 
