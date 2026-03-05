@@ -3,7 +3,7 @@ import json
 import cv2
 import numpy as np
 from ultralytics import YOLO
-from constantes import BODY_SKELETON, INDEX_LABEL_HIPS
+from constantes import BODY_SKELETON
 from utils import get_label_torso
 
 model = YOLO("yolo26n-pose.pt")
@@ -78,7 +78,7 @@ while True:
                 for (dx, dy), c in zip(keypoints, confidences):
 
                     if c > 0.2:
-                        x = hip_center_x + dx * scale#* img_w
+                        x = hip_center_x + dx * scale #* img_w
                         y = hip_center_y + dy * scale #* img_h
 
                         projected_points.append((x, y))
