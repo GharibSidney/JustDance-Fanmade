@@ -4,10 +4,11 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 from constantes import BODY_SKELETON, INDEX_LABEL_HIPS
+from utils import get_label_torso
 
 model = YOLO("yolo26n-pose.pt")
 labels_dir = "labels"
-
+label_torso = get_label_torso()
 # Webcam
 cap = cv2.VideoCapture(0)
 
@@ -34,14 +35,27 @@ while True:
 
         for person_kpts, person_conf in zip(yolo_kpts, yolo_conf):
 
-            # Require hips detected
-            if person_conf[11] < 0.3 or person_conf[12] < 0.3:
+           # Require hips and shoulders detected
+            if (
+                person_conf[11] < 0.3 or person_conf[12] < 0.3 or
+                person_conf[5] < 0.3  or person_conf[6] < 0.3
+            ):
                 continue
 
             # Compute YOLO hip center
             hip_center_x = (person_kpts[11][0] + person_kpts[12][0]) / 2
             hip_center_y = (person_kpts[11][1] + person_kpts[12][1]) / 2
 
+            # Compute YOLO shoulder center
+            shoulder_center_x = (person_kpts[5][0] + person_kpts[6][0]) / 2
+            shoulder_center_y = (person_kpts[5][1] + person_kpts[6][1]) / 2
+            # Convert to vectors
+            hip_center = np.array([hip_center_x, hip_center_y])
+            shoulder_center = np.array([shoulder_center_x, shoulder_center_y])
+            # Compute torso length (pixels)
+            player_torso = np.linalg.norm(shoulder_center - hip_center)
+            # Compute scale
+            scale = player_torso / label_torso
             # Draw YOLO hip center
             cv2.circle(frame, (int(hip_center_x), int(hip_center_y)), 8, (0,255,255), -1)
 
@@ -64,8 +78,8 @@ while True:
                 for (dx, dy), c in zip(keypoints, confidences):
 
                     if c > 0.2:
-                        x = hip_center_x + dx * img_w
-                        y = hip_center_y + dy * img_h
+                        x = hip_center_x + dx * scale#* img_w
+                        y = hip_center_y + dy * scale #* img_h
 
                         projected_points.append((x, y))
                         cv2.circle(frame, (int(x), int(y)), 6, (0, 0, 255), -1)
