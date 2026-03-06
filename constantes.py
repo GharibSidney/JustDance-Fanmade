@@ -24,7 +24,7 @@ BODY_SKELETON = [
 # | 11        | 16            | right_ankle    |
 
 
-MAX_FRAMES = 900
+MAX_FRAMES = 2400
 INDEX_LABEL_HIPS = 200
-VIDEO_PATH = "downloads/Rasputin.webm"
+VIDEO_PATH = "downloads/Rasputin.mp4"
 AUDIO_PATH = "downloads/Rasputin_audio.mp3"
