@@ -10,3 +10,4 @@ Faire en sorte qu'on normalise le squelette si la personne est plus proche ou pl
 ou à gauche ou a droite
 
 - Si on ne voit pas le point on ne compte pas le score, donc si je ne vois pas tes pieds, je ne compte pas.
+- Lorsqu'on fait la prédiction, on fait un mirroir sur l'image ou sur les labels

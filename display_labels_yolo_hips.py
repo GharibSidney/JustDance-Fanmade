@@ -3,15 +3,15 @@ import json
 import cv2
 import numpy as np
 from ultralytics import YOLO
-from constantes import BODY_SKELETON
+from constantes import BODY_SKELETON, VIDEO_PATH
 from utils import get_label_torso
 
 model = YOLO("yolo26n-pose.pt")
 labels_dir = "labels"
 label_torso = get_label_torso()
 # Webcam
-cap = cv2.VideoCapture(0)
-
+cap = cv2.VideoCapture(0) # live video
+video_cap = cv2.VideoCapture(VIDEO_PATH) # dance video
 if not cap.isOpened():
     print("Error: Could not open webcam.")
     exit()
@@ -21,6 +21,10 @@ frame_index = 0
 while True:
     ret, frame = cap.read()
     if not ret:
+        break
+    frame = cv2.flip(frame, 1)  # mirror effect
+    ret2, video_frame = video_cap.read()
+    if not ret2:
         break
 
     img_h, img_w = frame.shape[:2]
@@ -98,7 +102,14 @@ while True:
                                 (255, 0, 0), 2, )
             except:
                 continue
-    cv2.imshow("Live Pose with YOLO Hip Reference", frame)
+    # Resize video to match webcam height
+    h = frame.shape[0]
+    video_frame = cv2.resize(video_frame, (int(video_frame.shape[1] * h / video_frame.shape[0]), h))
+
+    # Combine side-by-side
+    debug_view = np.hstack((frame, video_frame))
+
+    cv2.imshow("Debug View (Player | Original)", debug_view)
 
     if cv2.waitKey(1) & 0xFF == ord("q"):
         break
@@ -106,4 +117,5 @@ while True:
     frame_index += 1
 
 cap.release()
+video_cap.release()
 cv2.destroyAllWindows()
