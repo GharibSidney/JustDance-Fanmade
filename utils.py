@@ -1,6 +1,7 @@
 import os
 import json
 import numpy as np
+import pygame
 from constantes import INDEX_LABEL_HIPS
 
 def get_label_torso(labels_dir="labels"):
@@ -22,5 +23,17 @@ def get_label_torso(labels_dir="labels"):
     # the shoulder center in the label coordinate system.
     return label_torso
 
+def get_audio(audio_path:str):
+
+    pygame.mixer.init()
+    pygame.mixer.music.load(audio_path)
+    pygame.mixer.music.play()
+
+def get_labels(labels_dir="labels"):
+    labels = {}
+    for f in os.listdir(labels_dir):
+        with open(os.path.join(labels_dir, f)) as file:
+            labels[int(f.split(".")[0])] = json.load(file)
+    return labels
 if __name__ == "__main__":
     print(get_label_torso())

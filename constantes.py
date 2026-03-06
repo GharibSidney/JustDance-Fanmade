@@ -26,4 +26,5 @@ BODY_SKELETON = [
 
 MAX_FRAMES = 900
 INDEX_LABEL_HIPS = 200
-VIDEO_PATH = "downloads/Just Dance 2017 PC Unlimited Rasputin 4K.webm"
+VIDEO_PATH = "downloads/Rasputin.webm"
+AUDIO_PATH = "downloads/Rasputin_audio.mp3"
