@@ -1,8 +1,13 @@
 import os
 import json
 import numpy as np
+import cv2
+import warnings
+# disable annoying warnings
+os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
+warnings.filterwarnings("ignore", message="pkg_resources is deprecated as an API")
 import pygame
-from constantes import INDEX_LABEL_HIPS
+from constantes import INDEX_LABEL_HIPS, BODY_SKELETON
 
 def get_label_torso(labels_dir="labels"):
 
@@ -23,7 +28,7 @@ def get_label_torso(labels_dir="labels"):
     # the shoulder center in the label coordinate system.
     return label_torso
 
-def get_audio(audio_path:str):
+def run_audio(audio_path:str):
 
     pygame.mixer.init()
     pygame.mixer.music.load(audio_path)
@@ -51,6 +56,18 @@ def get_scale(person_kpts):
     # Compute scale
     scale = player_torso / get_label_torso()
     return scale, hip_center_x, hip_center_y
+
+def draw_skeleton(labeled_projected_points, frame):
+    # Draw Skeleton
+    for i_k, j_k in BODY_SKELETON:
+        if (
+            labeled_projected_points[i_k] is not None
+            and labeled_projected_points[j_k] is not None
+        ):
+            x1, y1, _ = labeled_projected_points[i_k]
+            x2, y2, _ = labeled_projected_points[j_k]
+            cv2.line(frame, (int(x1), int(y1)), (int(x2), int(y2)),
+                    (255, 0, 0), 2, )
 
 if __name__ == "__main__":
     print(get_label_torso())

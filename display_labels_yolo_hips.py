@@ -2,8 +2,8 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 from constantes import BODY_SKELETON, VIDEO_PATH, AUDIO_PATH
-from utils import get_audio, get_labels, get_scale
-from score import get_score
+from utils import run_audio, get_labels, get_scale, draw_skeleton
+from score import get_smoothed_score
 
 model = YOLO("yolo26n-pose.pt")
 
@@ -14,11 +14,11 @@ if not cap.isOpened():
     print("Error: Could not open webcam.")
     exit()
 fps = video_cap.get(cv2.CAP_PROP_FPS)
-print(fps)
+print("frame per second: ", fps)
 # frame_time = 1.0 / fps
 labels = get_labels(labels_dir="labels")
-
-get_audio(AUDIO_PATH)
+score_buffer = []
+run_audio(AUDIO_PATH)
 frame_index = 0
 # start_time = time.time()
 while True:
@@ -70,17 +70,8 @@ while True:
                     cv2.circle(frame, (int(x), int(y)), 6, (0, 0, 255), -1)
                     # else:
                     #     labeled_projected_points.append(None)
-                # Draw Skeleton
-                for i_k, j_k in BODY_SKELETON:
-                    if (
-                        labeled_projected_points[i_k] is not None
-                        and labeled_projected_points[j_k] is not None
-                    ):
-                        x1, y1, _ = labeled_projected_points[i_k]
-                        x2, y2, _ = labeled_projected_points[j_k]
-                        cv2.line( frame, (int(x1), int(y1)), (int(x2), int(y2)),
-                                (255, 0, 0), 2, )
-                # get_score([(yolo_kpts[0], yolo_conf[0])], labeled_projected_points)
+                draw_skeleton(labeled_projected_points, frame)
+                get_smoothed_score([(yolo_kpts[0], yolo_conf[0])], labeled_projected_points, score_buffer)
     # Resize video to match webcam height
     h = frame.shape[0]
     video_frame = cv2.resize(video_frame, (int(video_frame.shape[1] * h / video_frame.shape[0]), h))

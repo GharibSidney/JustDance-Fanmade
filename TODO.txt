@@ -11,3 +11,17 @@ ou à gauche ou a droite
 
 - Si on ne voit pas le point on ne compte pas le score, donc si je ne vois pas tes pieds, je ne compte pas.
 - Lorsqu'on fait la prédiction, on fait un mirroir sur l'image ou sur les labels
+
+
+small_frame = cv2.resize(frame, (640, 360))
+
+results = model(small_frame, device="cpu", verbose=False)
+
+yolo_kpts = results[0].keypoints.xy.cpu().numpy()
+yolo_conf = results[0].keypoints.conf.cpu().numpy()
+
+scale_x = frame.shape[1] / small_frame.shape[1]
+scale_y = frame.shape[0] / small_frame.shape[0]
+
+yolo_kpts[:, :, 0] *= scale_x
+yolo_kpts[:, :, 1] *= scale_y
