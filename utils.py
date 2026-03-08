@@ -35,5 +35,22 @@ def get_labels(labels_dir="labels"):
         with open(os.path.join(labels_dir, f)) as file:
             labels[int(f.split(".")[0])] = json.load(file)
     return labels
+
+def get_scale(person_kpts):
+    # Compute YOLO hip center
+    hip_center_x = (person_kpts[11][0] + person_kpts[12][0]) / 2
+    hip_center_y = (person_kpts[11][1] + person_kpts[12][1]) / 2
+    # Compute YOLO shoulder center
+    shoulder_center_x = (person_kpts[5][0] + person_kpts[6][0]) / 2
+    shoulder_center_y = (person_kpts[5][1] + person_kpts[6][1]) / 2
+    # Convert to vectors
+    hip_center = np.array([hip_center_x, hip_center_y])
+    shoulder_center = np.array([shoulder_center_x, shoulder_center_y])
+    # Compute torso length (pixels)
+    player_torso = np.linalg.norm(shoulder_center - hip_center)
+    # Compute scale
+    scale = player_torso / get_label_torso()
+    return scale, hip_center_x, hip_center_y
+
 if __name__ == "__main__":
     print(get_label_torso())
