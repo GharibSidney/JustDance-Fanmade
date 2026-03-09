@@ -11,7 +11,10 @@ ou à gauche ou a droite
 
 - Si on ne voit pas le point on ne compte pas le score, donc si je ne vois pas tes pieds, je ne compte pas.
 - Lorsqu'on fait la prédiction, on fait un mirroir sur l'image ou sur les labels
-
+- https://www.youtube.com/watch?v=R91TENdjt2w&list=PLqtjIQd5SbIhkhTXun2XLQ2-0_ZBGPhXc&index=6
+- https://www.youtube.com/watch?v=W9bNipC2oQw&list=PLqtjIQd5SbIhkhTXun2XLQ2-0_ZBGPhXc&index=9
+- https://www.youtube.com/watch?v=6h5LieoWoa4&list=PLqtjIQd5SbIhkhTXun2XLQ2-0_ZBGPhXc&index=11 
+- https://www.youtube.com/watch?v=TyjsSXEn4mE&list=PLqtjIQd5SbIhkhTXun2XLQ2-0_ZBGPhXc&index=15
 
 small_frame = cv2.resize(frame, (640, 360))
 
