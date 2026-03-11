@@ -4,13 +4,14 @@ The main page displaying all available songs in a responsive grid.
 """
 
 import logging
+import math
 from typing import Optional, List
 
 from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QScrollArea,
                              QGridLayout, QLabel, QPushButton, QFrame,
                              QGraphicsDropShadowEffect, QSizePolicy)
-from PyQt6.QtCore import Qt, QSize, pyqtSignal, QEvent
-from PyQt6.QtGui import QFont, QColor, QIcon, QPainter, QPixmap
+from PyQt6.QtCore import Qt, QSize, pyqtSignal, QEvent, QPointF, QTimer
+from PyQt6.QtGui import QFont, QColor, QIcon, QPainter, QPixmap, QPainterPath
 
 import constants
 from media_manager import SongInfo, get_media_manager
@@ -119,7 +120,6 @@ class HeaderWidget(QWidget):
         self.setGraphicsEffect(shadow)
 
     def _create_settings_icon(self) -> QIcon:
-        """Create a settings gear icon."""
         pixmap = QPixmap(24, 24)
         pixmap.fill(Qt.GlobalColor.transparent)
 
@@ -129,26 +129,31 @@ class HeaderWidget(QWidget):
         painter.setPen(QColor(constants.TEXT_SECONDARY))
         painter.setBrush(QColor(constants.TEXT_SECONDARY))
 
-        # Draw gear shape
-        import math
         cx, cy = 12, 12
-        outer_r = 9
-        inner_r = 6
+        outer_r = 7
+        inner_r = 5
         teeth = 8
-        tooth_depth = 3
+        tooth_depth = 2
 
-        path = []
+        path = QPainterPath()
+
         for i in range(teeth * 2):
             angle = i * math.pi / teeth
-            if i % 2 == 0:
-                r = outer_r + tooth_depth
-            else:
-                r = inner_r
+            r = outer_r + tooth_depth if i % 2 == 0 else inner_r
+
             x = cx + r * math.cos(angle - math.pi / 2)
             y = cy + r * math.sin(angle - math.pi / 2)
-            path.append((x, y))
 
-        # Draw center circle
+            if i == 0:
+                path.moveTo(x, y)
+            else:
+                path.lineTo(x, y)
+
+        path.closeSubpath()
+
+        painter.drawPath(path)
+
+        # center circle
         painter.drawEllipse(QPointF(cx, cy), 3, 3)
 
         painter.end()

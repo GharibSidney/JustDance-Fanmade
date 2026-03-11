@@ -11,7 +11,7 @@ from PyQt6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel,
                              QGraphicsDropShadowEffect)
 from PyQt6.QtCore import (Qt, QSize, pyqtSignal, QPropertyAnimation,
                           QEasingCurve, QRect)
-from PyQt6.QtGui import QFont, QColor, QPainter, QPainterPath
+from PyQt6.QtGui import QFont, QColor, QPainter, QPainterPath, QPixmap
 
 import constants
 from settings_manager import get_settings_manager

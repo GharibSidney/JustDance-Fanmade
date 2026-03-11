@@ -110,7 +110,8 @@ class SongCard(QWidget):
         """Set up the user interface components."""
         # Main container
         self.setFixedWidth(constants.CARD_MIN_WIDTH)
-        self.setMinimumHeight(constants.CARD_MIN_WIDTH // constants.CARD_ASPECT_RATIO + 60)
+        height = int(constants.CARD_MIN_WIDTH / constants.CARD_ASPECT_RATIO) + 60
+        self.setMinimumHeight(height)
         self.setSizePolicy(QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Fixed)
 
         # Layout
@@ -121,9 +122,8 @@ class SongCard(QWidget):
         # Thumbnail container with rounded corners
         self._thumbnail_container = QWidget()
         self._thumbnail_container.setFixedSize(
-            constants.CARD_MIN_WIDTH,
-            constants.CARD_MIN_WIDTH // constants.CARD_ASPECT_RATIO
-        )
+        constants.CARD_MIN_WIDTH,
+        int(constants.CARD_MIN_WIDTH / constants.CARD_ASPECT_RATIO))
         self._thumbnail_container.setStyleSheet(f"""
             QWidget {{
                 background-color: {constants.THEME_LIGHT_GRAY};
@@ -138,7 +138,7 @@ class SongCard(QWidget):
         )
         self._thumbnail_label.setFixedSize(
             constants.CARD_MIN_WIDTH - 4,
-            constants.CARD_MIN_WIDTH // constants.CARD_ASPECT_RATIO - 4
+            int(constants.CARD_MIN_WIDTH // constants.CARD_ASPECT_RATIO - 4)
         )
         self._thumbnail_label.move(2, 2)
 

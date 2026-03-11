@@ -239,53 +239,61 @@ class SplashScreen(QSplashScreen):
 
     def __init__(self) -> None:
         """Initialize the splash screen."""
-        # Create splash pixmap
+        pixmap = self._create_pixmap()
+        super().__init__(pixmap)
+
+    def _create_pixmap(self) -> QPixmap:
+        """Create the splash screen pixmap."""
         pixmap = QPixmap(400, 300)
         pixmap.fill(QColor(constants.THEME_WHITE))
 
-        super().__init__(pixmap)
-
-        self._setup_ui()
-
-    def _setup_ui(self) -> None:
-        """Set up splash screen UI."""
-        painter = QPainter(self.pixmap())
+        painter = QPainter(pixmap)
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
 
-        # Draw title
+        # Title
         title_font = QFont(constants.FONT_FAMILY, 36, QFont.Weight.Bold)
         painter.setFont(title_font)
         painter.setPen(QColor(constants.ACCENT_PRIMARY))
 
-        title_rect = self.pixmap().rect()
+        title_rect = pixmap.rect()
         title_rect.setTop(80)
-        painter.drawText(title_rect, Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop,
-                        constants.APP_NAME)
+        painter.drawText(
+            title_rect,
+            Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop,
+            constants.APP_NAME
+        )
 
-        # Draw subtitle
+        # Subtitle
         subtitle_font = QFont(constants.FONT_FAMILY, 14)
         painter.setFont(subtitle_font)
         painter.setPen(QColor(constants.TEXT_SECONDARY))
 
-        subtitle_rect = self.pixmap().rect()
+        subtitle_rect = pixmap.rect()
         subtitle_rect.setTop(130)
-        painter.drawText(subtitle_rect, Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop,
-                         "Loading...")
+        painter.drawText(
+            subtitle_rect,
+            Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignTop,
+            "Loading..."
+        )
 
-        # Draw version
+        # Version
         version_font = QFont(constants.FONT_FAMILY, 10)
         painter.setFont(version_font)
         painter.setPen(QColor(constants.TEXT_TERTIARY))
 
-        version_rect = self.pixmap().rect()
+        version_rect = pixmap.rect()
         version_rect.setBottom(30)
-        painter.drawText(version_rect, Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignBottom,
-                        f"Version {constants.APP_VERSION}")
+        painter.drawText(
+            version_rect,
+            Qt.AlignmentFlag.AlignHCenter | Qt.AlignmentFlag.AlignBottom,
+            f"Version {constants.APP_VERSION}"
+        )
 
         painter.end()
 
+        return pixmap
+
     def show_message(self, message: str) -> None:
-        """Show a loading message on the splash screen."""
         self.showMessage(
             message,
             Qt.AlignmentFlag.AlignBottom | Qt.AlignmentFlag.AlignHCenter,
@@ -320,20 +328,14 @@ def create_application() -> QApplication:
 
 
 def show_splash_and_start(app: QApplication) -> None:
-    """
-    Show splash screen and start the main application.
-
-    Args:
-        app: QApplication instance
-    """
-    # Show splash
     splash = SplashScreen()
     splash.show()
-    app.processEvents()
 
-    # Create and show main window
-    main_window = MainWindow()
-    main_window.show()
+    def start_main():
+        main_window = MainWindow()
+        main_window.show()
+        splash.finish(main_window)
 
-    # Close splash
-    splash.finish(main_window)
+    QTimer.singleShot(100, start_main)
+
+    app.exec()

@@ -27,7 +27,7 @@ WINDOW_DEFAULT_HEIGHT = 800
 # ============================================================================
 
 # Base paths - relative to the application executable/script
-BASE_DIR =  "../"#Path(__file__).parent.resolve()
+BASE_DIR =  Path(__file__).parent.parent.resolve() #"../"#
 MUSICS_DIR = BASE_DIR / "musics"
 SETTINGS_FILE = BASE_DIR / "settings.json"
 CACHE_DIR = BASE_DIR / "cache"
