@@ -26,7 +26,19 @@ BODY_SKELETON = [
 
 MAX_FRAMES = 2400
 INDEX_LABEL_HIPS = 200
-VIDEO_PATH = "musics/Rasputin/video/Rasputin.mp4"
-AUDIO_PATH = "musics/Rasputin/audio/Rasputin_audio.mp3"
-
+song = ""
 SCORE_BUFFER_SIZE = 6 
+# globals (initialized later)
+song = None
+VIDEO_PATH = None
+AUDIO_PATH = None
+LABEL_DIR = None
+
+
+def set_song(new_song):
+    global song, VIDEO_PATH, AUDIO_PATH, LABEL_DIR
+
+    song = new_song
+    VIDEO_PATH = f"musics/{song}/video/{song}.mp4"
+    AUDIO_PATH = f"musics/{song}/audio/{song}_audio.mp3"
+    LABEL_DIR = f"labels/{song}"

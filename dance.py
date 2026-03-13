@@ -1,17 +1,19 @@
 import cv2
 import numpy as np
 from ultralytics import YOLO
-from constantes import BODY_SKELETON
+from constantes import set_song
 from utils import run_audio, get_labels, get_scale, draw_skeleton,run_video, run_webcam
 from score import get_smoothed_score
 
 model = YOLO("yolo26n-pose.pt")
+# TODO to change for argument
+set_song("Rasputin")
 cap = run_webcam()
 video_cap = run_video()
 # Webcam
 
 # frame_time = 1.0 / fps
-labels = get_labels(labels_dir="labels")
+labels = get_labels()
 score_buffer = []
 run_audio()
 frame_index = 0
@@ -44,7 +46,7 @@ while True:
                 ):
                     continue
 
-                scale, hip_center_x, hip_center_y = get_scale(person_kpts)
+                scale, hip_center_x, hip_center_y = get_scale(person_kpts, )
                 # Draw YOLO hip center
                 cv2.circle(frame, (int(hip_center_x), int(hip_center_y)), 8, (0,255,255), -1)
 

@@ -7,11 +7,11 @@ import warnings
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
 warnings.filterwarnings("ignore", message="pkg_resources is deprecated as an API")
 import pygame
-from constantes import INDEX_LABEL_HIPS, BODY_SKELETON, VIDEO_PATH, AUDIO_PATH
+import constantes
 
-def get_label_torso(labels_dir="labels"):
+def get_label_torso(labels_dir=constantes.LABEL_DIR):
 
-    label_path = os.path.join(labels_dir, f"{INDEX_LABEL_HIPS}.json")
+    label_path = os.path.join(labels_dir, f"{constantes.INDEX_LABEL_HIPS}.json")
 
     with open(label_path, "r") as f:
         data = json.load(f)
@@ -28,13 +28,18 @@ def get_label_torso(labels_dir="labels"):
     # the shoulder center in the label coordinate system.
     return label_torso
 
-def run_audio(audio_path:str=AUDIO_PATH):
+def run_audio(audio_path:str=None):
+    if audio_path is None:
+        audio_path = constantes.AUDIO_PATH
 
     pygame.mixer.init()
     pygame.mixer.music.load(audio_path)
     pygame.mixer.music.play()
 
-def run_video(video_path:str=VIDEO_PATH):
+def run_video(video_path:str=None):
+    if video_path is None:
+            video_path = constantes.VIDEO_PATH
+
     video_cap = cv2.VideoCapture(video_path) # dance video
     if not video_cap.isOpened():
         print("Error: Could not open webcam.")
@@ -50,14 +55,18 @@ def run_webcam():
         exit()
     return cap
 
-def get_labels(labels_dir="labels/Rasputin"):
+def get_labels(labels_dir=None):
+    if labels_dir == None:
+        labels_dir = constantes.LABEL_DIR
     labels = {}
     for f in os.listdir(labels_dir):
         with open(os.path.join(labels_dir, f)) as file:
             labels[int(f.split(".")[0])] = json.load(file)
     return labels
 
-def get_scale(person_kpts):
+def get_scale(person_kpts, label_dir=None):
+    if label_dir == None:
+        label_dir = constantes.LABEL_DIR
     # Compute YOLO hip center
     hip_center_x = (person_kpts[11][0] + person_kpts[12][0]) / 2
     hip_center_y = (person_kpts[11][1] + person_kpts[12][1]) / 2
@@ -70,12 +79,12 @@ def get_scale(person_kpts):
     # Compute torso length (pixels)
     player_torso = np.linalg.norm(shoulder_center - hip_center)
     # Compute scale
-    scale = player_torso / get_label_torso()
+    scale = player_torso / get_label_torso(label_dir)
     return scale, hip_center_x, hip_center_y
 
 def draw_skeleton(labeled_projected_points, frame):
     # Draw Skeleton
-    for i_k, j_k in BODY_SKELETON:
+    for i_k, j_k in constantes.BODY_SKELETON:
         if (
             labeled_projected_points[i_k] is not None
             and labeled_projected_points[j_k] is not None
