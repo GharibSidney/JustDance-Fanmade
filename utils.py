@@ -50,7 +50,7 @@ def run_webcam():
         exit()
     return cap
 
-def get_labels(labels_dir="labels"):
+def get_labels(labels_dir="labels/Rasputin"):
     labels = {}
     for f in os.listdir(labels_dir):
         with open(os.path.join(labels_dir, f)) as file:
