@@ -1,24 +1,19 @@
 import cv2
 import numpy as np
 from ultralytics import YOLO
-from constantes import BODY_SKELETON, VIDEO_PATH, AUDIO_PATH
-from utils import run_audio, get_labels, get_scale, draw_skeleton
+from constantes import BODY_SKELETON
+from utils import run_audio, get_labels, get_scale, draw_skeleton,run_video, run_webcam
 from score import get_smoothed_score
 
 model = YOLO("yolo26n-pose.pt")
-
+cap = run_webcam()
+video_cap = run_video()
 # Webcam
-cap = cv2.VideoCapture(0) # live video
-video_cap = cv2.VideoCapture(VIDEO_PATH) # dance video
-if not cap.isOpened():
-    print("Error: Could not open webcam.")
-    exit()
-fps = video_cap.get(cv2.CAP_PROP_FPS)
-print("frame per second: ", fps)
+
 # frame_time = 1.0 / fps
 labels = get_labels(labels_dir="labels")
 score_buffer = []
-run_audio(AUDIO_PATH)
+run_audio()
 frame_index = 0
 # start_time = time.time()
 while True:

@@ -7,7 +7,7 @@ import warnings
 os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
 warnings.filterwarnings("ignore", message="pkg_resources is deprecated as an API")
 import pygame
-from constantes import INDEX_LABEL_HIPS, BODY_SKELETON
+from constantes import INDEX_LABEL_HIPS, BODY_SKELETON, VIDEO_PATH, AUDIO_PATH
 
 def get_label_torso(labels_dir="labels"):
 
@@ -28,11 +28,27 @@ def get_label_torso(labels_dir="labels"):
     # the shoulder center in the label coordinate system.
     return label_torso
 
-def run_audio(audio_path:str):
+def run_audio(audio_path:str=AUDIO_PATH):
 
     pygame.mixer.init()
     pygame.mixer.music.load(audio_path)
     pygame.mixer.music.play()
+
+def run_video(video_path:str=VIDEO_PATH):
+    video_cap = cv2.VideoCapture(video_path) # dance video
+    if not video_cap.isOpened():
+        print("Error: Could not open webcam.")
+        exit()
+    fps = video_cap.get(cv2.CAP_PROP_FPS)
+    print("frame per second: ", fps)
+    return video_cap
+
+def run_webcam():
+    cap = cv2.VideoCapture(0) # live video
+    if not cap.isOpened():
+        print("Error: Could not open webcam.")
+        exit()
+    return cap
 
 def get_labels(labels_dir="labels"):
     labels = {}
