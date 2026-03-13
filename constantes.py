@@ -26,7 +26,7 @@ BODY_SKELETON = [
 
 MAX_FRAMES = 2400
 INDEX_LABEL_HIPS = 200
-VIDEO_PATH = "downloads/Rasputin.mp4"
-AUDIO_PATH = "downloads/Rasputin_audio.mp3"
+VIDEO_PATH = "musics/video/Rasputin.mp4"
+AUDIO_PATH = "musics/audio/Rasputin_audio.mp3"
 
 SCORE_BUFFER_SIZE = 6 

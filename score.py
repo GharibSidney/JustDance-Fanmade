@@ -11,7 +11,7 @@ JOINT_WEIGHTS = np.array([
 
 
 def get_score(prediction_key_points, labels_key_points):
-
+    # https://arxiv.org/pdf/2204.06806
     pred_xy, pred_conf = prediction_key_points[0]
 
     # remove head
