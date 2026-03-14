@@ -1,5 +1,5 @@
 import numpy as np
-from constantes import SCORE_BUFFER_SIZE
+from constantes import SCORE_BUFFER_SIZE, PERFECT_SCORE, SUPER_SCORE, GOOD_SCORE, OK_SCORE
 JOINT_WEIGHTS = np.array([
     1.2, 1.2,   # shoulders
     1.3, 1.3,   # elbows
@@ -58,6 +58,19 @@ def get_score(prediction_key_points, labels_key_points):
     return final_score
 
 
+def get_score_to_image(smooth_score):
+    if smooth_score >= PERFECT_SCORE:
+        return "images/perfect.jpg"
+    if smooth_score >= SUPER_SCORE :
+        return "images/super.jpg"
+    if smooth_score >= GOOD_SCORE:
+        return "images/good2.jpg"
+    if smooth_score >= OK_SCORE:
+        return "images/ok.jpg"
+    else:
+        return "images/bad.jpg"
+
+
 def get_smoothed_score(prediction_key_points, labels_key_points, score_buffer):
     score = get_score(prediction_key_points, labels_key_points)
 
@@ -67,6 +80,6 @@ def get_smoothed_score(prediction_key_points, labels_key_points, score_buffer):
         score_buffer.pop(0)
 
     smooth_score = sum(score_buffer) / len(score_buffer)
-
-    # print("Smooth score:", round(smooth_score, 1))
-    return score_buffer
+    print("Score buffer", score_buffer)
+    print("Smooth score:", round(smooth_score, 1))
+    return score_buffer, smooth_score, get_score_to_image(score)

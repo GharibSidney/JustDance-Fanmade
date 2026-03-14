@@ -25,9 +25,15 @@ BODY_SKELETON = [
 
 
 MAX_FRAMES = 2400
-INDEX_LABEL_HIPS = 200
-song = ""
+INDEX_LABEL_HIPS = 200 # this is just a random value to get the label
 SCORE_BUFFER_SIZE = 6 
+FRAME_TO_PREDICT = 9 # make a prediction every 9 frames
+PERFECT_SCORE = 75
+SUPER_SCORE = 60
+GOOD_SCORE = 45
+OK_SCORE = 35
+
+
 # globals (initialized later)
 song = None
 VIDEO_PATH = None

@@ -49,7 +49,7 @@ def run_video(video_path:str=None):
         exit()
     fps = video_cap.get(cv2.CAP_PROP_FPS)
     print("frame per second: ", fps)
-    return video_cap
+    return video_cap, fps
 
 def run_webcam():
     cap = cv2.VideoCapture(0) # live video
@@ -96,6 +96,29 @@ def draw_skeleton(labeled_projected_points, frame):
             x2, y2, _ = labeled_projected_points[j_k]
             cv2.line(frame, (int(x1), int(y1)), (int(x2), int(y2)),
                     (255, 0, 0), 2, )
+            
+
+import cv2
+
+def add_small_image_corner(image_score_path, video_frame, alpha=1.0):
+
+    score_img = cv2.imread(image_score_path)
+
+    if score_img is None:
+        return video_frame
+
+    score_img = cv2.resize(score_img, (150, 150))
+    h, w = video_frame.shape[:2]
+    sh, sw = score_img.shape[:2]
+    y1, y2 = 0, sh
+    x1, x2 = w - sw, w
+
+    roi = video_frame[y1:y2, x1:x2]
+    # Blend overlay with frame
+    blended = cv2.addWeighted(score_img, alpha, roi, 1 - alpha, 0)
+    video_frame[y1:y2, x1:x2] = blended
+
+    return video_frame
 
 if __name__ == "__main__":
     print(get_label_torso())
