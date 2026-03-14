@@ -10,9 +10,6 @@ def main(song:str="Rasputin"):
 
     video_cap = run_video()
     cap = run_webcam()
-    # Webcam
-
-    # frame_time = 1.0 / fps
     labels = get_labels()
     score_buffer = []
     frame_index = 0
@@ -23,7 +20,6 @@ def main(song:str="Rasputin"):
         if not ret:
             break
         frame = cv2.flip(frame, 1)  # mirror effect
-        # video_cap.set(cv2.CAP_PROP_POS_FRAMES, frame_index) # Set the frame according to the fps to sync audio and video
         ret2, video_frame = video_cap.read()
         if not ret2:
             break
@@ -65,8 +61,7 @@ def main(song:str="Rasputin"):
                         y = hip_center_y + dy * scale #* img_h
                         labeled_projected_points.append((x, y, c))
                         cv2.circle(frame, (int(x), int(y)), 6, (0, 0, 255), -1)
-                        # else:
-                        #     labeled_projected_points.append(None)
+
                     draw_skeleton(labeled_projected_points, frame)
                     get_smoothed_score([(yolo_kpts[0], yolo_conf[0])], labeled_projected_points, score_buffer)
         # Resize video to match webcam height
@@ -81,8 +76,6 @@ def main(song:str="Rasputin"):
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
 
-        # elapsed = time.time() - start_time
-        # frame_index = int(elapsed * fps)
         frame_index+=1
 
     cap.release()
