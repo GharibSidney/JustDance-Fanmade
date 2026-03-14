@@ -36,6 +36,9 @@ def run_audio(audio_path:str=None):
     pygame.mixer.music.load(audio_path)
     pygame.mixer.music.play()
 
+def stop_audio():
+    pygame.mixer.music.stop()
+
 def run_video(video_path:str=None):
     if video_path is None:
             video_path = constantes.VIDEO_PATH

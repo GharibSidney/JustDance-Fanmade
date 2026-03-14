@@ -53,7 +53,7 @@ def get_score(prediction_key_points, labels_key_points):
 
     final_score *= 100
 
-    print("Score:", round(final_score, 1))
+    # print("Score:", round(final_score, 1))
 
     return final_score
 
@@ -68,5 +68,5 @@ def get_smoothed_score(prediction_key_points, labels_key_points, score_buffer):
 
     smooth_score = sum(score_buffer) / len(score_buffer)
 
-    print("Smooth score:", round(smooth_score, 1))
+    # print("Smooth score:", round(smooth_score, 1))
     return score_buffer

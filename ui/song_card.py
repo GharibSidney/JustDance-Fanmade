@@ -2,7 +2,7 @@
 Song Card module for Just Dance UI.
 Creates interactive card widgets for displaying songs with hover effects.
 """
-
+import sys
 import logging
 from pathlib import Path
 from typing import Optional, Callable
@@ -15,6 +15,8 @@ from PyQt6.QtGui import QFont, QPixmap, QColor, QPainter, QBrush, QPen
 
 import constants
 from media_manager import SongInfo, get_media_manager
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+from dance import main as launch_dance
 
 
 class RoundedLabel(QLabel):
@@ -307,8 +309,9 @@ class SongCard(QWidget):
 
             # Emit clicked signal
             self.clicked.emit(self._song_info.name)
+            launch_dance(self._song_info.name)
 
-        super().mousePressEvent(event)
+        # super().mousePressEvent(event)
 
     def _animate_click(self) -> None:
         """Animate click feedback."""

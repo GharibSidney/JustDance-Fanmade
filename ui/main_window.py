@@ -228,8 +228,8 @@ class MainWindow(QMainWindow):
 
         # Stop any playing audio
         self._media_manager.stop_audio(fade_out=False)
-
         event.accept()
+        sys.exit(0)
 
 
 class SplashScreen(QSplashScreen):
