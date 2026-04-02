@@ -48,3 +48,4 @@ def set_song(new_song):
     VIDEO_PATH = f"musics/{song}/video/{song}.mp4"
     AUDIO_PATH = f"musics/{song}/audio/{song}_audio.mp3"
     LABEL_DIR = f"labels/{song}"
+    return VIDEO_PATH

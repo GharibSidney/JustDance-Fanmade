@@ -11,7 +11,7 @@ from transformers import (
     VitPoseForPoseEstimation
 )
 from accelerate import Accelerator
-from constantes import VIDEO_PATH, MAX_FRAMES 
+from constantes import MAX_FRAMES, set_song
 
 
 # ============================================================
@@ -24,6 +24,7 @@ device = Accelerator().device
 
 labels_dir = "labels"
 os.makedirs(labels_dir, exist_ok=True)
+VIDEO_PATH = set_song("Rasputin")
 # ============================================================
 # 🔹 LOAD MODELS (ONLY ONCE)
 # ============================================================
@@ -43,7 +44,7 @@ frame_index = 0
 
 while True:
     ret, frame = cap.read()
-    if not ret or frame_index > MAX_FRAMES:
+    if not ret: #or frame_index > MAX_FRAMES:
         break
 
     height, width = frame.shape[:2]
