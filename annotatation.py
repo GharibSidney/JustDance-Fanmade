@@ -18,7 +18,7 @@ device = Accelerator().device
 
 labels_dir = "labels"
 os.makedirs(labels_dir, exist_ok=True)
-song_name = "Starships"
+song_name = "Saxobeat"
 VIDEO_PATH = set_song(song_name)
 os.makedirs(labels_dir+"/"+song_name, exist_ok=True)
 # Load models

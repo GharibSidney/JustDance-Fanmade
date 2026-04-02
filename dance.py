@@ -10,7 +10,7 @@ from utils import (
 from score import get_smoothed_score
 
 
-def main(song: str = "Starships", isUi = False):
+def main(song: str = "Saxobeat", isUi = False):
 
     set_song(song)
 

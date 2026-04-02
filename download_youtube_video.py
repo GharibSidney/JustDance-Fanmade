@@ -14,7 +14,7 @@
 # Normal format
 import yt_dlp
 
-url = "https://youtu.be/R91TENdjt2w?si=CzVQ8ikmel6CNIrG"
+url = "https://youtu.be/TyjsSXEn4mE?si=MhWm7Uu7Htac3arG"
 
 ydl_opts = {
     'outtmpl': 'downloads/%(title)s.%(ext)s',
