@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 from ultralytics import YOLO
+import pyautogui
 from constantes import set_song, FRAME_TO_PREDICT
 from utils import (
     run_audio, get_labels, get_scale, draw_skeleton,
@@ -18,7 +19,7 @@ def main(song: str = "Starships", isUi = False):
     cap = run_webcam()
 
     labels = get_labels(isUi)
-
+    screen_width, screen_height = pyautogui.size()
     score_buffer = []
     frame_index = 0
     total_score = 0
@@ -110,10 +111,16 @@ def main(song: str = "Starships", isUi = False):
 
         # Resize + display
 
-        h = frame.shape[0]
+        # h = frame.shape[0]
 
-        video_frame = cv2.resize(video_frame,(int(video_frame.shape[1] * h / video_frame.shape[0]), h))
-        debug_view = np.hstack((frame, video_frame))
+        # video_frame = cv2.resize(video_frame,(int(video_frame.shape[1] * h / video_frame.shape[0]), h))
+        half_w = int(screen_width // 2)
+        half_h = int(screen_height)
+
+        frame_resized = cv2.resize(frame, (half_w, half_h))
+        video_resized = cv2.resize(video_frame, (half_w, half_h))
+
+        debug_view = np.hstack((frame_resized, video_resized))
         cv2.imshow("Debug View (Player | Original)", debug_view)
 
         if cv2.waitKey(1) & 0xFF == ord("q"):

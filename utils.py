@@ -88,6 +88,7 @@ def get_scale(person_kpts, isUi=False):
     player_torso = np.linalg.norm(shoulder_center - hip_center)
     # Compute scale
     scale = player_torso / get_label_torso(label_dir)
+    scale = np.clip(scale, 500, 1000)
     return scale, hip_center_x, hip_center_y
 
 def draw_skeleton(labeled_projected_points, frame):
