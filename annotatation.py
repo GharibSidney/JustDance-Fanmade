@@ -14,20 +14,14 @@ from accelerate import Accelerator
 from constantes import MAX_FRAMES, set_song
 
 
-# ============================================================
-# 🔹 CONFIG
-# ============================================================
-
-  # change to your video
-
 device = Accelerator().device
 
 labels_dir = "labels"
 os.makedirs(labels_dir, exist_ok=True)
-VIDEO_PATH = set_song("Rasputin")
-# ============================================================
-# 🔹 LOAD MODELS (ONLY ONCE)
-# ============================================================
+song_name = "Starships"
+VIDEO_PATH = set_song(song_name)
+os.makedirs(labels_dir+"/"+song_name, exist_ok=True)
+# Load models
 
 person_processor = AutoProcessor.from_pretrained("PekingU/rtdetr_r50vd_coco_o365")
 person_model = RTDetrForObjectDetection.from_pretrained("PekingU/rtdetr_r50vd_coco_o365", device_map=device)
@@ -35,10 +29,7 @@ person_model = RTDetrForObjectDetection.from_pretrained("PekingU/rtdetr_r50vd_co
 pose_processor = AutoProcessor.from_pretrained("usyd-community/vitpose-base-simple")
 pose_model = VitPoseForPoseEstimation.from_pretrained("usyd-community/vitpose-base-simple", device_map=device)
 
-# ============================================================
-# 🔹 OPEN VIDEO
-# ============================================================
-
+# Open Video
 cap = cv2.VideoCapture(VIDEO_PATH)
 frame_index = 0
 
@@ -53,9 +44,7 @@ while True:
     image = Image.fromarray(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
 
     label_data = {"frame_index": frame_index, "image_width": width, "image_height": height, "persons": []}
-    # --------------------------------------------------------
-    # 1️⃣ Person Detection
-    # --------------------------------------------------------
+    # Person Detection
     inputs = person_processor(images=image, return_tensors="pt").to(device)
 
     with torch.no_grad():
@@ -68,13 +57,11 @@ while True:
     if len(person_boxes) > 0:
         person_boxes = person_boxes.cpu().numpy()
 
-        # Convert VOC → COCO (x, y, w, h)
+        # Convert VOC to COCO (x, y, w, h)
         person_boxes[:, 2] -= person_boxes[:, 0]
         person_boxes[:, 3] -= person_boxes[:, 1]
 
-        # --------------------------------------------------------
-        # 2️⃣ Pose Estimation
-        # --------------------------------------------------------
+        # Pose Estimation
         pose_inputs = pose_processor(image, boxes=[person_boxes], return_tensors="pt").to(device)
 
         with torch.no_grad():
@@ -93,7 +80,7 @@ while True:
             key_points_normalized[..., 1] /= height
             x1 = person_boxes[0, 0]
             y1 = person_boxes[0, 1]
-            # 1️⃣ Center on hips
+            # Center on hips
             kp = key_points.xy[0] 
             hip_center = (kp[6] + kp[7]) / 2
             kp_centered = kp - hip_center
@@ -144,7 +131,7 @@ while True:
             label_data["persons"].append(person_data)
     except:
         pass
-    label_path = os.path.join(labels_dir, f"{frame_index}.json")
+    label_path = os.path.join(labels_dir+"/"+song_name, f"{frame_index}.json")
     with open(label_path, "w") as f:
         json.dump(label_data, f, indent=2)
     frame_index+=1

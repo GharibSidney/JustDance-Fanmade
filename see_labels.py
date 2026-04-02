@@ -1,15 +1,17 @@
 import os
 import json
 import cv2
-from constantes import VIDEO_PATH, BODY_SKELETON, MAX_FRAMES
+from constantes import BODY_SKELETON, MAX_FRAMES, set_song
 # =========================
 # Paths
 # =========================
-labels_dir = "labels"             # folder containing json files
 
 # =========================
 # Open video
 # =========================
+song_name = "Starships"
+VIDEO_PATH = set_song(song_name)
+labels_dir = f"labels/{song_name}"             # folder containing json files
 cap = cv2.VideoCapture(VIDEO_PATH)
 
 fps = cap.get(cv2.CAP_PROP_FPS)

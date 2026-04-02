@@ -9,12 +9,11 @@ from utils import (
 from score import get_smoothed_score
 
 
-def main(song: str = "Rasputin"):
+def main(song: str = "Starships"):
 
     set_song(song)
 
     model = YOLO("yolo26n-pose.pt")
-
     video_cap, fps = run_video()
     cap = run_webcam()
 
