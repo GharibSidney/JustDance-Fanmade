@@ -28,9 +28,10 @@ def get_label_torso(labels_dir=constantes.LABEL_DIR):
     # the shoulder center in the label coordinate system.
     return label_torso
 
-def run_audio(audio_path:str=None):
-    if audio_path is None:
-        audio_path = constantes.AUDIO_PATH
+def run_audio(isUi=False):
+    audio_path = constantes.AUDIO_PATH
+    if isUi:
+        audio_path = "../" + constantes.AUDIO_PATH
 
     pygame.mixer.init()
     pygame.mixer.music.load(audio_path)
@@ -39,13 +40,15 @@ def run_audio(audio_path:str=None):
 def stop_audio():
     pygame.mixer.music.stop()
 
-def run_video(video_path:str=None):
-    if video_path is None:
-            video_path = constantes.VIDEO_PATH
+def run_video(isUi):
+    video_path = constantes.VIDEO_PATH
+    if isUi:
+        video_path = "../" + constantes.VIDEO_PATH
 
+    print("video path", video_path)
     video_cap = cv2.VideoCapture(video_path) # dance video
     if not video_cap.isOpened():
-        print("Error: Could not open webcam.")
+        print("Error: Could not open video.")
         exit()
     fps = video_cap.get(cv2.CAP_PROP_FPS)
     print("frame per second: ", fps)
@@ -58,18 +61,20 @@ def run_webcam():
         exit()
     return cap
 
-def get_labels(labels_dir=None):
-    if labels_dir == None:
-        labels_dir = constantes.LABEL_DIR
+def get_labels(isUi=False):
+    labels_dir = constantes.LABEL_DIR
+    if isUi:
+        labels_dir = "../"+ constantes.LABEL_DIR
     labels = {}
     for f in os.listdir(labels_dir):
         with open(os.path.join(labels_dir, f)) as file:
             labels[int(f.split(".")[0])] = json.load(file)
     return labels
 
-def get_scale(person_kpts, label_dir=None):
-    if label_dir == None:
-        label_dir = constantes.LABEL_DIR
+def get_scale(person_kpts, isUi=False):
+    label_dir = constantes.LABEL_DIR
+    if isUi:
+        label_dir = "../" +constantes.LABEL_DIR
     # Compute YOLO hip center
     hip_center_x = (person_kpts[11][0] + person_kpts[12][0]) / 2
     hip_center_y = (person_kpts[11][1] + person_kpts[12][1]) / 2
@@ -98,9 +103,9 @@ def draw_skeleton(labeled_projected_points, frame):
                     (255, 0, 0), 2, )
             
 
-import cv2
-
-def add_small_image_corner(image_score_path, video_frame, alpha=1.0):
+def add_small_image_corner(image_score_path, video_frame, alpha=1.0, isUi=False):
+    if isUi:
+        image_score_path = "../" + image_score_path
 
     score_img = cv2.imread(image_score_path)
 

@@ -9,15 +9,15 @@ from utils import (
 from score import get_smoothed_score
 
 
-def main(song: str = "Starships"):
+def main(song: str = "Starships", isUi = False):
 
     set_song(song)
 
     model = YOLO("yolo26n-pose.pt")
-    video_cap, fps = run_video()
+    video_cap, fps = run_video(isUi)
     cap = run_webcam()
 
-    labels = get_labels()
+    labels = get_labels(isUi)
 
     score_buffer = []
     frame_index = 0
@@ -29,7 +29,7 @@ def main(song: str = "Starships"):
     fade_start_frame = None
     fade_duration = int(fps * 2)  # fade lasts 2 seconds
 
-    run_audio()
+    run_audio(isUi)
 
     while True:
         ret, frame = cap.read()
@@ -59,7 +59,7 @@ def main(song: str = "Starships"):
                     ):
                         continue
 
-                    scale, hip_center_x, hip_center_y = get_scale(person_kpts)
+                    scale, hip_center_x, hip_center_y = get_scale(person_kpts, isUi)
 
                     cv2.circle(frame, (int(hip_center_x), int(hip_center_y)), 8, (0,255,255), -1)
 
@@ -86,7 +86,6 @@ def main(song: str = "Starships"):
 
                     draw_skeleton(labeled_projected_points, frame)
 
-
                     # Score calculation
                     score_buffer, smoothed_score, image_score_path = get_smoothed_score([(yolo_kpts[0], yolo_conf[0])], labeled_projected_points,score_buffer)
                     total_score += smoothed_score
@@ -103,15 +102,13 @@ def main(song: str = "Starships"):
         if current_score_image is not None and fade_start_frame is not None:
             elapsed = frame_index - fade_start_frame
             alpha = max(0, 1 - elapsed / fade_duration)
-            video_frame = add_small_image_corner(current_score_image, video_frame, alpha)
+            video_frame = add_small_image_corner(current_score_image, video_frame, alpha, isUi)
 
             if alpha == 0:
                 current_score_image = None
                 fade_start_frame = None
 
-        # ------------------------------
         # Resize + display
-        # ------------------------------
 
         h = frame.shape[0]
 

@@ -5,7 +5,7 @@ from constantes import set_song
 from utils import get_labels, run_video
 
 
-# ---------------- OKS ----------------
+# OKS 
 def compute_oks(pred_kpts, gt_kpts, bbox, sigmas):
     bbox_w = abs(bbox["x2"] - bbox["x1"])
     bbox_h = abs(bbox["y2"] - bbox["y1"])
@@ -46,7 +46,6 @@ def compute_iou(boxA, boxB):
     return inter_area / union
 
 
-# COCO-like sigmas adapted to your 12 joints
 SIGMAS = np.array([
     0.26, 0.26,  # shoulders
     0.25, 0.25,  # elbows
@@ -67,7 +66,7 @@ def main(song: str = "Rasputin"):
 
     frame_index = 0
 
-    # ---------------- Accumulators ----------------
+    # Accumulators 
     total_correct_pck = 0
     total_joints = 0
     oks_scores = []
@@ -122,7 +121,7 @@ def main(song: str = "Rasputin"):
                 max(gt_box_raw["y1"], gt_box_raw["y2"]), ]
 
                 iou = compute_iou(pred_box, gt_box)
-                # ---------------- OKS ----------------
+                # OKS 
                 oks = compute_oks(
                     pred_kpts,
                     gt_kpts,
@@ -139,9 +138,6 @@ def main(song: str = "Rasputin"):
         frame_index += 1
 
     video_cap.release()
-
-    # Final Metrics 
-
     # PCK
     pck = total_correct_pck / total_joints if total_joints > 0 else 0
 

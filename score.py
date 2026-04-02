@@ -80,6 +80,6 @@ def get_smoothed_score(prediction_key_points, labels_key_points, score_buffer):
         score_buffer.pop(0)
 
     smooth_score = sum(score_buffer) / len(score_buffer)
-    print("Score buffer", score_buffer)
-    print("Smooth score:", round(smooth_score, 1))
+    # print("Score buffer", score_buffer)
+    # print("Smooth score:", round(smooth_score, 1))
     return score_buffer, smooth_score, get_score_to_image(score)

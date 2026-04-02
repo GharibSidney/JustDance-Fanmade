@@ -308,8 +308,8 @@ class SongCard(QWidget):
             self._animate_click()
 
             # Emit clicked signal
-            self.clicked.emit(self._song_info.name)
-            launch_dance(self._song_info.name)
+            # self.clicked.emit(self._song_info.name)
+            launch_dance(self._song_info.name, True)
 
         # super().mousePressEvent(event)
 

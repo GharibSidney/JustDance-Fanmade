@@ -202,7 +202,6 @@ class MainWindow(QMainWindow):
         """
         self._logger.info(f"Song selected: {song_name}")
 
-        # TODO: Implement actual game launch
         # For now, show a confirmation
         reply = QMessageBox.question(
             self,
