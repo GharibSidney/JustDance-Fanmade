@@ -9,7 +9,7 @@ from constantes import BODY_SKELETON, MAX_FRAMES, set_song
 # =========================
 # Open video
 # =========================
-song_name = "Starships"
+song_name = "Saxobeat"
 VIDEO_PATH = set_song(song_name)
 labels_dir = f"labels/{song_name}"             # folder containing json files
 cap = cv2.VideoCapture(VIDEO_PATH)
@@ -51,7 +51,7 @@ while frame_index < MAX_FRAMES:
             if y2 < y1:
                 y2 = y1 + y2
 
-            cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 3)
+            # cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 3)
 
             keypoints = person["keypoints_to_hips_normalized"]
             confidences = person["confidence"][0]
