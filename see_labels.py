@@ -2,13 +2,7 @@ import os
 import json
 import cv2
 from constantes import BODY_SKELETON, MAX_FRAMES, set_song
-# =========================
-# Paths
-# =========================
 
-# =========================
-# Open video
-# =========================
 song_name = "Saxobeat"
 VIDEO_PATH = set_song(song_name)
 labels_dir = f"labels/{song_name}"             # folder containing json files
@@ -21,9 +15,9 @@ height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 fourcc = cv2.VideoWriter_fourcc(*"mp4v")
 frame_index = 0
 
-# =========================
+
 # Process Video
-# =========================
+
 frame_index = 0
 
 while frame_index < MAX_FRAMES:
@@ -75,11 +69,10 @@ while frame_index < MAX_FRAMES:
                         
                         cv2.line(frame, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2)
 
-    # SHOW FRAME
     cv2.imshow("Preview", frame)
 
-    # 30ms delay (adjust if too fast)
-    if cv2.waitKey(30) & 0xFF == ord('q'):
+    # 30ms delay
+    if cv2.waitKey(20) & 0xFF == ord('q'):
         break
 
     frame_index += 1
