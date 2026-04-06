@@ -6,25 +6,25 @@ All configuration values and magic numbers are defined here.
 import os
 from pathlib import Path
 
-# ============================================================================
+
 # APPLICATION CONFIGURATION
-# ============================================================================
+
 
 APP_NAME = "Just Dance UI"
 APP_VERSION = "1.0.0"
 
-# ============================================================================
+
 # WINDOW SETTINGS
-# ============================================================================
+
 
 WINDOW_MIN_WIDTH = 1024
 WINDOW_MIN_HEIGHT = 768
 WINDOW_DEFAULT_WIDTH = 1280
 WINDOW_DEFAULT_HEIGHT = 800
 
-# ============================================================================
+
 # PATH CONFIGURATION
-# ============================================================================
+
 
 # Base paths - relative to the application executable/script
 BASE_DIR =  Path(__file__).parent.parent.resolve() #"../"#
@@ -36,9 +36,9 @@ CACHE_DIR = BASE_DIR / "cache"
 VIDEO_SUBDIR = "video"
 AUDIO_SUBDIR = "audio"
 
-# ============================================================================
+
 # THEME COLORS - WHITE THEME
-# ============================================================================
+
 
 # Primary colors
 THEME_WHITE = "#FFFFFF"
@@ -64,9 +64,7 @@ SUCCESS_COLOR = "#28A745"
 WARNING_COLOR = "#FFC107"
 ERROR_COLOR = "#DC3545"
 
-# ============================================================================
 # TYPOGRAPHY
-# ============================================================================
 
 FONT_FAMILY = "Segoe UI"
 FONT_FAMILY_ALT = "Roboto"
@@ -84,9 +82,9 @@ FONT_WEIGHT_BOLD = 600
 FONT_WEIGHT_MEDIUM = 500
 FONT_WEIGHT_NORMAL = 400
 
-# ============================================================================
+
 # LAYOUT & SPACING
-# ============================================================================
+
 
 # Spacing constants (8px grid system)
 SPACING_XXS = 4
@@ -114,9 +112,9 @@ GRID_MAX_COLUMNS = 5
 GRID_SPACING = 24
 GRID_PADDING = 32
 
-# ============================================================================
+
 # SHADOW & EFFECTS
-# ============================================================================
+
 
 SHADOW_COLOR = "rgba(0, 0, 0, 0.1)"
 SHADOW_HOVER_COLOR = "rgba(0, 0, 0, 0.15)"
@@ -128,9 +126,9 @@ ANIMATION_DURATION_FAST = 150
 ANIMATION_DURATION_NORMAL = 250
 ANIMATION_DURATION_SLOW = 400
 
-# ============================================================================
+
 # MEDIA PROCESSING
-# ============================================================================
+
 
 # Thumbnail settings
 THUMBNAIL_WIDTH = 320
@@ -146,9 +144,9 @@ VIDEO_SUPPORTED_FORMATS = [".mp4", ".avi", ".mov", ".mkv", ".webm"]
 AUDIO_SUPPORTED_FORMATS = [".mp3", ".wav", ".ogg", ".flac", ".m4a"]
 AUDIO_FADE_DURATION = 500  # milliseconds
 
-# ============================================================================
+
 # SETTINGS DEFAULT VALUES
-# ============================================================================
+
 
 # Movement prediction settings
 DEFAULT_PREDICTION_FRAMES = 15
@@ -159,9 +157,9 @@ PREDICTION_FRAMES_STEP = 1
 # Settings keys
 SETTING_PREDICTION_FRAMES = "prediction_frames"
 
-# ============================================================================
+
 # UI COMPONENT CONFIGURATION
-# ============================================================================
+
 
 # Header
 HEADER_HEIGHT = 72
@@ -188,9 +186,9 @@ SLIDER_HEIGHT = 8
 SLIDER_HANDLE_SIZE = 20
 SLIDER_RANGE_PADDING = 20
 
-# ============================================================================
+
 # ERROR HANDLING
-# ============================================================================
+
 
 ERROR_LOG_FILE = BASE_DIR / "error.log"
 MAX_LOG_FILE_SIZE = 5 * 1024 * 1024  # 5MB
@@ -202,16 +200,16 @@ ERROR_VIDEO_LOAD_FAILED = "Failed to load video file"
 ERROR_AUDIO_LOAD_FAILED = "Failed to load audio file"
 ERROR_SETTINGS_SAVE_FAILED = "Failed to save settings"
 
-# ============================================================================
+
 # CACHE CONFIGURATION
-# ============================================================================
+
 
 CACHE_THUMBNAILS_DIR = CACHE_DIR / "thumbnails"
 CACHE_MAX_SIZE = 100 * 1024 * 1024  # 100MB
 
-# ============================================================================
+
 # DEBUG & DEVELOPMENT
-# ============================================================================
+
 
 DEBUG_MODE = False
 LOG_LEVEL = "INFO"  # DEBUG, INFO, WARNING, ERROR
