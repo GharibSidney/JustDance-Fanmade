@@ -56,13 +56,13 @@ SIGMAS = np.array([
 ])
 
 
-def main(song: str = "Rasputin"):
+def main(song: str = "Starships"):
 
     set_song(song)
 
     model = YOLO("yolo26n-pose.pt")
-    video_cap, fps = run_video()
-    labels = get_labels()
+    video_cap, fps = run_video(False)
+    labels = get_labels(False)
 
     frame_index = 0
 
@@ -122,12 +122,7 @@ def main(song: str = "Rasputin"):
 
                 iou = compute_iou(pred_box, gt_box)
                 # OKS 
-                oks = compute_oks(
-                    pred_kpts,
-                    gt_kpts,
-                    gt_person["bounding_box"],
-                    SIGMAS
-                )
+                oks = compute_oks( pred_kpts, gt_kpts, gt_person["bounding_box"], SIGMAS)
                 
                 oks_scores.append(oks)
                 try:
