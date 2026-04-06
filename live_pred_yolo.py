@@ -2,14 +2,9 @@ import cv2
 import numpy as np
 from ultralytics import YOLO
 
-# =========================
-# Load YOLO Pose Model
-# =========================
 model = YOLO("yolo26n-pose.pt")
 
-# =========================
 # Open LIVE webcam
-# =========================
 cap = cv2.VideoCapture(0)
 
 if not cap.isOpened():
@@ -31,9 +26,6 @@ SKELETON = [
 # Head indices to ignore
 HEAD_POINTS = {0, 1, 2, 3, 4}
 
-# =========================
-# Process LIVE Camera
-# =========================
 while True:
     ret, frame = cap.read()
     if not ret:
@@ -49,18 +41,12 @@ while True:
 
         for person_kpts, person_conf in zip(keypoints, confidences):
 
-            # =========================
-            # Draw BODY keypoints only
-            # =========================
             for i, (x, y) in enumerate(person_kpts):
                 if i in HEAD_POINTS:
                     continue
                 if person_conf[i] > 0.3:
                     cv2.circle(annotated_frame, (int(x), int(y)), 6, (0, 0, 255), -1)
-
-            # =========================
-            # Draw BODY skeleton only
-            # =========================
+                    
             for i, j in SKELETON:
                 if i in HEAD_POINTS or j in HEAD_POINTS:
                     continue

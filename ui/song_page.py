@@ -41,12 +41,7 @@ class HeaderWidget(QWidget):
         """)
 
         layout = QHBoxLayout(self)
-        layout.setContentsMargins(
-            constants.GRID_PADDING,
-            0,
-            constants.GRID_PADDING,
-            0
-        )
+        layout.setContentsMargins(constants.GRID_PADDING, 0, constants.GRID_PADDING, 0)
         layout.setSpacing(constants.SPACING_MD)
 
         # Logo/Title section

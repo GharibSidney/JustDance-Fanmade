@@ -1,3 +1,0 @@
-onnx: 80ms
-openvino: 145ms
-pytorch: 145ms
