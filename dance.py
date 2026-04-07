@@ -24,11 +24,14 @@ def main(song: str = "Saxobeat", isUi = False):
     set_song(song)
 
     model = YOLO("yolo26n-pose.onnx")
-    video_cap, fps = run_video(isUi)
-    cap = run_webcam()
+
 
     labels = get_labels(isUi)
-    screen_width, screen_height = pyautogui.size()
+    video_cap, fps = run_video(isUi)
+    cap = run_webcam()
+    screen_width, screen_height = 1920, 1080 #pyautogui.size()
+    # print("width", screen_width)
+    # print("height", screen_height)
     score_buffer = []
     frame_index = 0
     total_score = 0
