@@ -1,5 +1,14 @@
 import cv2
+import torch
 import numpy as np
+import os, sys
+# Add torch DLL directory explicitly
+import site
+for sp in site.getsitepackages():
+    dll_path = os.path.join(sp, "torch", "lib")
+    if os.path.exists(dll_path):
+        os.add_dll_directory(dll_path)
+        break
 from ultralytics import YOLO
 import pyautogui
 from constantes import set_song, FRAME_TO_PREDICT
@@ -14,7 +23,7 @@ def main(song: str = "Saxobeat", isUi = False):
 
     set_song(song)
 
-    model = YOLO("yolo26n-pose.pt")
+    model = YOLO("yolo26n-pose.onnx")
     video_cap, fps = run_video(isUi)
     cap = run_webcam()
 

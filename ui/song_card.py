@@ -3,6 +3,27 @@ Song Card module for Just Dance UI.
 Creates interactive card widgets for displaying songs with hover effects.
 """
 import sys
+import os
+# Add torch DLL directory explicitly
+import site
+for sp in site.getsitepackages():
+    dll_path = os.path.join(sp, "torch", "lib")
+    if os.path.exists(dll_path):
+        os.add_dll_directory(dll_path)
+        break
+
+import platform
+if platform.system() == "Windows":
+    import ctypes
+    from importlib.util import find_spec
+    try:
+        if (spec := find_spec("torch")) and spec.origin and os.path.exists(
+            dll_path := os.path.join(os.path.dirname(spec.origin), "lib", "c10.dll")
+        ):
+            ctypes.CDLL(os.path.normpath(dll_path))
+    except Exception:
+        pass
+import torch
 import logging
 from pathlib import Path
 from typing import Optional, Callable
@@ -309,7 +330,7 @@ class SongCard(QWidget):
 
             # Emit clicked signal
             # self.clicked.emit(self._song_info.name)
-            launch_dance(self._song_info.name, True)
+            launch_dance(self._song_info.name, False)
 
         # super().mousePressEvent(event)
 
