@@ -1,7 +1,7 @@
 import cv2
-import torch
+# import torch
 import numpy as np
-import os, sys
+import os
 # Add torch DLL directory explicitly
 import site
 for sp in site.getsitepackages():
@@ -10,7 +10,7 @@ for sp in site.getsitepackages():
         os.add_dll_directory(dll_path)
         break
 from ultralytics import YOLO
-import pyautogui
+# import pyautogui
 from constantes import set_song, FRAME_TO_PREDICT
 from utils import (
     run_audio, get_labels, get_scale, draw_skeleton,
