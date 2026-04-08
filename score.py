@@ -71,7 +71,7 @@ def get_score_to_image(smooth_score):
         return "images/bad.jpg"
 
 
-def get_smoothed_score(prediction_key_points, labels_key_points, score_buffer):
+def compute_smoothed_score(prediction_key_points, labels_key_points, score_buffer):
     score = get_score(prediction_key_points, labels_key_points)
 
     score_buffer.append(score)

@@ -89,7 +89,7 @@ def get_scale(person_kpts, isUi=False):
     # Compute scale
     scale = player_torso / get_label_torso(label_dir)
     # print("scale", scale)
-    scale = np.clip(scale, 500, 1000)
+    scale = np.clip(scale, 500, 1500)
     return scale, hip_center_x, hip_center_y
 
 def draw_skeleton(labeled_projected_points, frame):
@@ -101,8 +101,7 @@ def draw_skeleton(labeled_projected_points, frame):
         ):
             x1, y1, _ = labeled_projected_points[i_k]
             x2, y2, _ = labeled_projected_points[j_k]
-            cv2.line(frame, (int(x1), int(y1)), (int(x2), int(y2)),
-                    (255, 0, 0), 2, )
+            cv2.line(frame, (int(x1), int(y1)), (int(x2), int(y2)), (255, 0, 0), 2, )
             
 
 def add_small_image_corner(image_score_path, video_frame, alpha=1.0, isUi=False):
@@ -126,6 +125,24 @@ def add_small_image_corner(image_score_path, video_frame, alpha=1.0, isUi=False)
     video_frame[y1:y2, x1:x2] = blended
 
     return video_frame
+
+def show_yolo_pred(person_kpts, person_conf, annotated_frame):
+
+    for i, (x, y) in enumerate(person_kpts):
+        if i in constantes.YOLO_HEAD_POINTS:
+            continue
+        if person_conf[i] > 0.3:
+            cv2.circle(annotated_frame, (int(x), int(y)), 6, (0, 0, 255), -1)
+            
+    for i, j in constantes.YOLO_SKELETON:
+        if i in  constantes.YOLO_HEAD_POINTS or j in  constantes.YOLO_HEAD_POINTS:
+            continue
+        if person_conf[i] > 0.3 and person_conf[j] > 0.3:
+            x1, y1 = person_kpts[i]
+            x2, y2 = person_kpts[j]
+            cv2.line(annotated_frame, (int(x1), int(y1)),(int(x2), int(y2)), (0, 255, 255), 2, )
+
+    return annotated_frame
 
 if __name__ == "__main__":
     print(get_label_torso())

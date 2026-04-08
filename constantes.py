@@ -8,6 +8,18 @@ BODY_SKELETON = [
     (7, 9), (9, 11)  # right leg
 ]
 
+YOLO_SKELETON = [
+    (5, 6), (5, 7), (7, 9),
+    (6, 8), (8, 10),
+    (5, 11), (6, 12),
+    (11, 12),
+    (11, 13), (13, 15),
+    (12, 14), (14, 16)
+]
+
+# Head indices to ignore
+YOLO_HEAD_POINTS = {0, 1, 2, 3, 4}
+
 # | New index | Original COCO | Joint          |
 # | --------- | ------------- | -------------- |
 # | 0         | 5             | left_shoulder  |
@@ -27,7 +39,7 @@ BODY_SKELETON = [
 MAX_FRAMES = 2400
 INDEX_LABEL_HIPS = 200 # this is just a random value to get the label
 SCORE_BUFFER_SIZE = 6 
-FRAME_TO_PREDICT = 12 # make a prediction every 9 frames
+FRAME_TO_PREDICT = 9 # make a prediction every 9 frames
 PERFECT_SCORE = 75
 SUPER_SCORE = 60
 GOOD_SCORE = 45
