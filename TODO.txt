@@ -1,11 +1,3 @@
-Plan de match:
-Ajouter les métriques 
-- AP voir COCO pose
-- PCK 
-obtenir un score sur une dance
-ajouter le le menu qui start et qui dit quand est-ce que tu dois commencer 
-
-
 
 - Si on ne voit pas le point on ne compte pas le score, donc si je ne vois pas tes pieds, je ne compte pas.
 - Lorsqu'on fait la prédiction, on fait un mirroir sur l'image ou sur les labels
@@ -14,16 +6,4 @@ ajouter le le menu qui start et qui dit quand est-ce que tu dois commencer
 - https://www.youtube.com/watch?v=6h5LieoWoa4&list=PLqtjIQd5SbIhkhTXun2XLQ2-0_ZBGPhXc&index=11 
 - https://www.youtube.com/watch?v=TyjsSXEn4mE&list=PLqtjIQd5SbIhkhTXun2XLQ2-0_ZBGPhXc&index=15
 
-small_frame = cv2.resize(frame, (640, 360))
-
-results = model(small_frame, device="cpu", verbose=False)
-
-yolo_kpts = results[0].keypoints.xy.cpu().numpy()
-yolo_conf = results[0].keypoints.conf.cpu().numpy()
-
-scale_x = frame.shape[1] / small_frame.shape[1]
-scale_y = frame.shape[0] / small_frame.shape[0]
-
-yolo_kpts[:, :, 0] *= scale_x
-yolo_kpts[:, :, 1] *= scale_y
 

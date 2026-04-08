@@ -50,6 +50,11 @@ def run_video(isUi):
     if not video_cap.isOpened():
         print("Error: Could not open video.")
         exit()
+    for _ in range(10):
+        video_cap.read()
+
+    # Then reset zoom
+    video_cap.set(cv2.CAP_PROP_ZOOM, 0)
     fps = video_cap.get(cv2.CAP_PROP_FPS)
     print("frame per second: ", fps)
     return video_cap, fps
@@ -59,16 +64,19 @@ def run_webcam():
     if not cap.isOpened():
         print("Error: Could not open webcam.")
         exit()
+        
     return cap
 
 def get_labels(isUi=False):
     labels_dir = constantes.LABEL_DIR
     if isUi:
         labels_dir = "../"+ constantes.LABEL_DIR
+
     labels = {}
     for f in os.listdir(labels_dir):
         with open(os.path.join(labels_dir, f)) as file:
             labels[int(f.split(".")[0])] = json.load(file)
+            
     return labels
 
 def get_scale(person_kpts, isUi=False):
@@ -89,7 +97,7 @@ def get_scale(person_kpts, isUi=False):
     # Compute scale
     scale = player_torso / get_label_torso(label_dir)
     # print("scale", scale)
-    scale = np.clip(scale, 500, 1500)
+    # scale = np.clip(scale, 500, 1500)
     return scale, hip_center_x, hip_center_y
 
 def draw_skeleton(labeled_projected_points, frame):
@@ -143,6 +151,25 @@ def show_yolo_pred(person_kpts, person_conf, annotated_frame):
             cv2.line(annotated_frame, (int(x1), int(y1)),(int(x2), int(y2)), (0, 255, 255), 2, )
 
     return annotated_frame
+
+def resize_with_aspect_ratio(img, target_w, target_h):
+    h, w = img.shape[:2]
+
+    scale = min(target_w / w, target_h / h)
+    new_w = int(w * scale)
+    new_h = int(h * scale)
+
+    resized = cv2.resize(img, (new_w, new_h))
+
+    # Create black canvas
+    canvas = np.zeros((target_h, target_w, 3), dtype=np.uint8)
+
+    # Center the image
+    x_offset = (target_w - new_w) // 2
+    y_offset = (target_h - new_h) // 2
+
+    canvas[y_offset:y_offset+new_h, x_offset:x_offset+new_w] = resized
+    return canvas
 
 if __name__ == "__main__":
     print(get_label_torso())

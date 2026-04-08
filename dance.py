@@ -14,12 +14,12 @@ from ultralytics import YOLO
 from constantes import set_song, FRAME_TO_PREDICT
 from utils import (
     run_audio, get_labels, get_scale, draw_skeleton,
-    run_video, run_webcam, stop_audio, add_small_image_corner, show_yolo_pred
+    run_video, run_webcam, stop_audio, add_small_image_corner, resize_with_aspect_ratio, show_yolo_pred
 )
 from score import compute_smoothed_score
 
 
-def main(song: str = "Saxobeat", isUi = False):
+def main(song: str = "Rasputin", isUi = False):
 
     set_song(song)
 
@@ -29,6 +29,8 @@ def main(song: str = "Saxobeat", isUi = False):
     labels = get_labels(isUi)
     video_cap, fps = run_video(isUi)
     cap = run_webcam()
+    print("cap init", cap.get(cv2.CAP_PROP_ZOOM))
+    print("video init", video_cap.get(cv2.CAP_PROP_ZOOM))
     screen_width, screen_height = 1920, 1080 #pyautogui.size()
     # print("width", screen_width)
     # print("height", screen_height)
@@ -58,57 +60,57 @@ def main(song: str = "Saxobeat", isUi = False):
 
             results = model(frame, device="cpu", verbose=False)
 
-        if results[0].keypoints is not None:
+            if results[0].keypoints is not None:
 
-            yolo_kpts = results[0].keypoints.xy.cpu().numpy()
-            yolo_conf = results[0].keypoints.conf.cpu().numpy()
+                yolo_kpts = results[0].keypoints.xy.cpu().numpy()
+                yolo_conf = results[0].keypoints.conf.cpu().numpy()
 
-            for person_kpts, person_conf in zip(yolo_kpts[:1], yolo_conf[:1]):
+                for person_kpts, person_conf in zip(yolo_kpts[:1], yolo_conf[:1]):
 
-                # require hips + shoulders
-                if (
-                    person_conf[11] < 0.3 or person_conf[12] < 0.3 or
-                    person_conf[5] < 0.3 or person_conf[6] < 0.3
-                ):
-                    continue
+                    # require hips + shoulders
+                    if (
+                        person_conf[11] < 0.3 or person_conf[12] < 0.3 or
+                        person_conf[5] < 0.3 or person_conf[6] < 0.3
+                    ):
+                        continue
 
-                scale, hip_center_x, hip_center_y = get_scale(person_kpts, isUi)
+                    scale, hip_center_x, hip_center_y = get_scale(person_kpts, isUi)
 
-                cv2.circle(frame, (int(hip_center_x), int(hip_center_y)), 8, (0,255,255), -1)
+                    cv2.circle(frame, (int(hip_center_x), int(hip_center_y)), 8, (0,255,255), -1)
 
-                data = labels.get(frame_index)
+                    data = labels.get(frame_index)
 
-                if data is None or len(data["persons"]) == 0:
-                    continue
+                    if data is None or len(data["persons"]) == 0:
+                        continue
 
-                label_person = data["persons"][0]
+                    label_person = data["persons"][0]
 
-                keypoints = label_person["keypoints_to_hips_normalized"]
-                confidences = label_person["confidence"][0]
+                    keypoints = label_person["keypoints_to_hips_normalized"]
+                    confidences = label_person["confidence"][0]
 
-                labeled_projected_points = []
+                    labeled_projected_points = []
 
-                for (dx, dy), c in zip(keypoints, confidences):
+                    for (dx, dy), c in zip(keypoints, confidences):
 
-                    x = hip_center_x + dx * scale
-                    y = hip_center_y + dy * scale
+                        x = hip_center_x + dx * scale
+                        y = hip_center_y + dy * scale
 
-                    labeled_projected_points.append((x, y, c))
+                        labeled_projected_points.append((x, y, c))
 
-                    cv2.circle(frame, (int(x), int(y)), 6, (0, 0, 255), -1)
+                        cv2.circle(frame, (int(x), int(y)), 6, (0, 0, 255), -1)
 
-                draw_skeleton(labeled_projected_points, frame) # for demo
-                show_yolo_pred(person_kpts, person_conf, frame) # for demo
-                # Score calculation
-                score_buffer, smoothed_score, image_score_path = compute_smoothed_score([(yolo_kpts[0], yolo_conf[0])], labeled_projected_points,score_buffer)
-                total_score += smoothed_score
+                    draw_skeleton(labeled_projected_points, frame) # for demo
+                    # show_yolo_pred(person_kpts, person_conf, frame) # for demo
+                    # Score calculation
+                    score_buffer, smoothed_score, image_score_path = compute_smoothed_score([(yolo_kpts[0], yolo_conf[0])], labeled_projected_points,score_buffer)
+                    total_score += smoothed_score
 
-                # Update score display every 4 seconds after 5 seconds
-                if frame_index > 5 * fps and frame_index - last_score_update >= fps * 4:
+                    # Update score display every 4 seconds after 5 seconds
+                    if frame_index > 5 * fps and frame_index - last_score_update >= fps * 4:
 
-                    current_score_image = image_score_path
-                    fade_start_frame = frame_index
-                    last_score_update = frame_index
+                        current_score_image = image_score_path
+                        fade_start_frame = frame_index
+                        last_score_update = frame_index
 
         # Score image fade animation
 
@@ -131,10 +133,13 @@ def main(song: str = "Saxobeat", isUi = False):
 
         frame_resized = cv2.resize(frame, (half_w, half_h))
         video_resized = cv2.resize(video_frame, (half_w, half_h))
+        print("cap mid", cap.get(cv2.CAP_PROP_ZOOM))
+        print("video mid", video_cap.get(cv2.CAP_PROP_ZOOM))
 
         debug_view = np.hstack((frame_resized, video_resized))
         cv2.imshow("Debug View (Player | Original)", debug_view)
-
+        print("cap end", cap.get(cv2.CAP_PROP_ZOOM))
+        print("video end", video_cap.get(cv2.CAP_PROP_ZOOM))
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
 
