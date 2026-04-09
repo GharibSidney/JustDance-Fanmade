@@ -29,8 +29,7 @@ def main(song: str = "Rasputin", isUi = False):
     labels = get_labels(isUi)
     video_cap, fps = run_video(isUi)
     cap = run_webcam()
-    print("cap init", cap.get(cv2.CAP_PROP_ZOOM))
-    print("video init", video_cap.get(cv2.CAP_PROP_ZOOM))
+
     screen_width, screen_height = 1920, 1080 #pyautogui.size()
     # print("width", screen_width)
     # print("height", screen_height)
@@ -133,13 +132,12 @@ def main(song: str = "Rasputin", isUi = False):
 
         frame_resized = cv2.resize(frame, (half_w, half_h))
         video_resized = cv2.resize(video_frame, (half_w, half_h))
-        print("cap mid", cap.get(cv2.CAP_PROP_ZOOM))
-        print("video mid", video_cap.get(cv2.CAP_PROP_ZOOM))
 
         debug_view = np.hstack((frame_resized, video_resized))
+        cv2.namedWindow("Debug View (Player | Original)", cv2.WINDOW_NORMAL)
+        cv2.resizeWindow("Debug View (Player | Original)", 1920, 1080)
         cv2.imshow("Debug View (Player | Original)", debug_view)
-        print("cap end", cap.get(cv2.CAP_PROP_ZOOM))
-        print("video end", video_cap.get(cv2.CAP_PROP_ZOOM))
+
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break
 
