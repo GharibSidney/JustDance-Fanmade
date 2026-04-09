@@ -12,7 +12,7 @@ if not cap.isOpened():
 
 frame_index = 0
 
-# COCO Skeleton connections (YOLO default)
+# COCO Skeleton connections
 SKELETON = [
     (5, 6), (5, 7), (7, 9),
     (6, 8), (8, 10),
