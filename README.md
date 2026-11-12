@@ -1,20 +1,20 @@
-![Démo de JustDance-Fanmade avec la webcam et la chorégraphie côte à côte](images/dance_demo.png)
+![JustDance-Fanmade demo showing the webcam feed and reference choreography side by side](images/dance_demo.png)
 
 # JustDance-Fanmade
 
-JustDance-Fanmade est un jeu de danse non officiel écrit en Python. Reproduisez les mouvements de la chorégraphie devant votre webcam. Le jeu détecte votre pose avec YOLO, la compare aux poses de référence et affiche une évaluation pendant la chanson.
+JustDance-Fanmade is an unofficial dance game written in Python. Follow the choreography in front of your webcam. The game uses YOLO to detect your pose, compares it with the reference poses, and gives you feedback during the song.
 
 ## Installation
 
-Il vous faut Python et une webcam. Depuis la racine du projet, installez les dépendances :
+You'll need Python and a webcam. From the project root, install the dependencies.
 
 ```powershell
 python -m pip install -r requirements.txt
 ```
 
-[Téléchargez les fichiers du projet sur SharePoint](https://polymtlca-my.sharepoint.com/:f:/g/personal/sidney_gharib_etud_polymtl_ca/IgDY8vg9BqqORrIe_oCFqKwUAb6w_5k6j4swtrOnrSm066o?e=0qK07N), puis extrayez les archives à la racine du projet. Vérifiez que les dossiers `labels` et `musics` ne sont pas imbriqués et que le modèle `yolo26n-pose.onnx` se trouve à côté de `dance.py`.
+[Download the project assets from SharePoint](https://polymtlca-my.sharepoint.com/:f:/g/personal/sidney_gharib_etud_polymtl_ca/IgDY8vg9BqqORrIe_oCFqKwUAb6w_5k6j4swtrOnrSm066o?e=0qK07N) and extract the archives into the project root. Make sure there is one top-level `labels` folder and one top-level `musics` folder, with no duplicate folders nested inside them. Place `yolo26n-pose.onnx` next to `dance.py`.
 
-Pour la chanson jouée par défaut, les chemins attendus sont les suivants :
+The default song uses this file layout.
 
 ```text
 JustDance-Fanmade/
@@ -22,21 +22,21 @@ JustDance-Fanmade/
 ├── yolo26n-pose.onnx
 ├── labels/
 │   └── Rasputin/
-│       └── 0.json (et les autres fichiers de poses)
+│       └── 0.json (and the remaining pose files)
 └── musics/
     └── Rasputin/
         ├── audio/Rasputin.mp3
         └── video/Rasputin.mp4
 ```
 
-## Jouer
+## How to play
 
-Depuis la racine du projet, lancez :
+Run this command from the project root.
 
 ```powershell
 python dance.py
 ```
 
-La chanson **Rasputin** démarre avec la vue de la webcam et la vidéo de référence côte à côte. Appuyez sur **Q** dans la fenêtre du jeu pour quitter. Le score final s’affiche dans le terminal.
+**Rasputin** starts with your webcam feed and the reference video side by side. Press **Q** in the game window to quit. The final score appears in the terminal.
 
-Le dépôt contient aussi du code commenté que vous pouvez réactiver pour expérimenter.
+The repository also contains commented-out code you can enable to experiment.
